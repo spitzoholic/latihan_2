@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:latihan_2/data_model.dart';
+import 'package:latihan_2/detail_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -15,6 +16,8 @@ class _MainScreenState extends State<MainScreen> {
   int page = 1;
   bool hasMore = true;
   List<DataModel> items = [];
+
+  final scrollController = ScrollController();
 
   Future fetch() async {
     if (isLoading) return;
@@ -40,26 +43,57 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    fetch();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        fetch();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Judul Halaman'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() {
-          setState(() {
-            fetch();
-          });
-        }),
-        child: const Icon(Icons.add),
-      ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8),
         child: ListView.builder(
-          itemCount: items.length,
+          controller: scrollController,
+          itemCount: items.length + 1,
           itemBuilder: ((context, index) {
-            return Card(
-              child: ListTile(title: Text(items[index].name)),
+            if (index < items.length) {
+              return Card(
+                child: ListTile(
+                  leading: Image.network(items[index].imageLocationUrl),
+                  title: Text(items[index].name),
+                  subtitle: Text(items[index].phoneNumber),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailScreen(item: items[index]),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: hasMore
+                  ? const Center(child: CircularProgressIndicator())
+                  : const Text('No more data to show.'),
             );
           }),
         ),
