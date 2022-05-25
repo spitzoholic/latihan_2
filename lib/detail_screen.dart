@@ -12,61 +12,69 @@ class DetailScreen extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Image.network(
-                  item.imageLocationUrl,
-                ),
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white.withOpacity(0.5),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back),
-                      ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Stack(
+            children: [
+              Image.network(
+                item.imageLocationUrl,
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.5),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back),
                     ),
                   ),
-                )
-              ],
-            ),
-            Text(item.name, style: TextDefault.text20),
-            Column(
+                ),
+              )
+            ],
+          ),
+          Center(
+            child: Column(
               children: [
-                const Text('Address'),
+                const Divider(
+                  height: 20,
+                ),
+                Text(
+                  item.name,
+                  style: TextDefault.text16B,
+                ),
+                const Divider(
+                  height: 20,
+                ),
+                const Text(
+                  'Address',
+                ),
                 Text(
                   item.address,
-                  style: TextDefault.text20,
                 ),
-                const Divider(),
+                const Divider(
+                  height: 30,
+                ),
                 const Text('Phone Number'),
                 Text(
                   item.phoneNumber,
-                  style: TextDefault.text20,
                 ),
                 const Divider(),
                 const Text('Latitude'),
                 Text(
                   item.lat.toString(),
-                  style: TextDefault.text20,
                 ),
                 const Divider(),
                 const Text('Longitude'),
                 Text(
                   item.long.toString(),
-                  style: TextDefault.text20,
                 ),
                 const Divider(),
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ]),
       ),
     );
   }

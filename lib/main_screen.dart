@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:latihan_2/data_model.dart';
 import 'package:latihan_2/detail_screen.dart';
+import 'package:latihan_2/style.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -76,8 +77,14 @@ class _MainScreenState extends State<MainScreen> {
               return Card(
                 child: ListTile(
                   leading: Image.network(items[index].imageLocationUrl),
-                  title: Text(items[index].name),
-                  subtitle: Text(items[index].phoneNumber),
+                  title: Text(
+                    items[index].name,
+                    style: TextDefault.textDefault,
+                  ),
+                  subtitle: Text(
+                    items[index].phoneNumber,
+                    style: TextDefault.text10,
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -93,7 +100,9 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.all(8.0),
               child: hasMore
                   ? const Center(child: CircularProgressIndicator())
-                  : const Text('No more data to show.'),
+                  : const Center(
+                      child: Text('No more data to show.'),
+                    ),
             );
           }),
         ),
